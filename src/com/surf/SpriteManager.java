@@ -7,13 +7,12 @@ import java.io.File;
 import java.util.ArrayList;
 
 final class SpriteManager {
-    private ArrayList<Sprite> sprites;
+    private ArrayList<Sprite> sprites = new ArrayList<>();
     private String texture = "default";
     PApplet p;
 
     SpriteManager(PApplet parent) {
         p = parent;
-        sprites = new ArrayList<>();
         loadSpriteFolders();
     }
 
@@ -44,7 +43,7 @@ final class SpriteManager {
     PImage getSprite(String reference) {
         for(Sprite i : sprites) {
             if(i.reference.equals(reference)) {
-                return i.sprite;
+                return i.img;
             }
         }
         return null;
@@ -57,11 +56,11 @@ final class SpriteManager {
     }
 
     private class Sprite {
-        PImage sprite;
+        PImage img;
         String reference;
 
         Sprite(PImage sprite, String reference) {
-            this.sprite = sprite;
+            this.img = sprite;
             this.reference = reference;
         }
     }
