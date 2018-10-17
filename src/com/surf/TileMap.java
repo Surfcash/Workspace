@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static com.surf.MainApp.*;
 
 class TileMap {
-    ArrayList<Tile> tiles;
+    ArrayList<Tile> tiles = new ArrayList<>();
     private PVector scrollValue, scrollMax;
     PApplet p;
 
@@ -16,7 +16,6 @@ class TileMap {
         p = parent;
         this.scrollValue = new PVector(0, 0);
         this.scrollMax = new PVector((wide * TILESIZE) - p.width, p.height - (high * TILESIZE));
-        this.tiles = new ArrayList<>();
     }
 
     void update() {

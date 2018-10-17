@@ -1,7 +1,6 @@
 package com.surf;
 
 import processing.core.PApplet;
-import processing.core.PImage;
 
 import java.util.ArrayList;
 
@@ -12,13 +11,10 @@ class Scene {
     PApplet p;
     Player player;
     TileMap tilemap;
-    ArrayList<Button> buttons;
-    //public PImage background;
-    PImage overlayUI;
+    ArrayList<Button> buttons = new ArrayList<>();
 
     Scene(PApplet parent) {
         p = parent;
-        buttons = new ArrayList<>();
         tilemap = new TileMap(0, 0, p);
     }
 

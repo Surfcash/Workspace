@@ -182,12 +182,12 @@ class Player {
 
     private void constrainToWindow() {
         pos.x = constrain(pos.x, SIZEX_HALF, p.width - SIZEX_HALF);
-        pos.y = constrain(pos.y, -SIZEY_HALF, p.height + SIZEY_HALF);
+        pos.y = constrain(pos.y, -SIZEY_HALF, p.height + SIZEY);
 
         if(pos.x == SIZEX_HALF && vel.x < 0) vel.x = 0;
         if(pos.x == p.width - SIZEX / 2 && vel.x > 0) vel.x = 0;
         if(pos.y == -SIZEY_HALF && vel.y < 0) vel.y = 0;
-        if(pos.y >= p.height + SIZEY_HALF) dead = true;
+        if(pos.y >= p.height + SIZEY) dead = true;
     }
 
     void loadSprite() {
