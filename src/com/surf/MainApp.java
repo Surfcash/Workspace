@@ -20,7 +20,7 @@ public class MainApp extends PApplet {
         game = new Game(this);
         spriteManager = new SpriteManager(this);
         surface.setTitle("Colin's Workspace - Platformer");
-        surface.setResizable(true);
+        surface.setResizable(false);
         window = new PVector(width, height);
     }
 

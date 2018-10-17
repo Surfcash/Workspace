@@ -17,7 +17,7 @@ class SceneLevel extends Scene {
     }
 
     void render() {
-        p.background(0);
+        p.background(255);
         player.render();
         tilemap.render();
         renderDeathCounter();
@@ -30,13 +30,13 @@ class SceneLevel extends Scene {
             case 1 : {
                 label = "1";
                 tilemap = LevelManager.levelLoader(label, p);
-                player = new Player(p.width / 2, p.height - TILESIZE * 2, p);
+                player = new Player((int)tilemap.tileMapSize.x / 2, p.height - TILESIZE * 2, p);
                 break;
             }
             case 2 : {
                 label = "2";
                 tilemap = LevelManager.levelLoader(label, p);
-                player = new Player(TILESIZE, p.height - TILESIZE * 2, p);
+                player = new Player(TILESIZE * 2, p.height - TILESIZE * 3, p);
                 break;
             }
             default : {

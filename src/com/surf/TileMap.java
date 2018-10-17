@@ -9,6 +9,7 @@ import static com.surf.MainApp.*;
 
 class TileMap {
     ArrayList<Tile> tiles = new ArrayList<>();
+    PVector tileMapSize;
     private PVector scrollValue, scrollMax;
     PApplet p;
 
@@ -16,6 +17,7 @@ class TileMap {
         p = parent;
         this.scrollValue = new PVector(0, 0);
         this.scrollMax = new PVector((wide * TILESIZE) - p.width, p.height - (high * TILESIZE));
+        this.tileMapSize = new PVector(wide* TILESIZE, high * TILESIZE);
     }
 
     void update() {

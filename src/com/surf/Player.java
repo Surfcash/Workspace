@@ -11,8 +11,8 @@ class Player {
     PVector pos;
     private PVector vel;
     private PApplet p;
-    private int SIZEX, SIZEY, SIZEX_HALF, SIZEY_HALF, jumpDelay;
-    private float GRAVITY, ACCEL, MAXVEL, JUMPVEL, FRICTION;
+    private int SIZEX, SIZEY, SIZEX_HALF, SIZEY_HALF;
+    private float GRAVITY, ACCEL, MAXVEL, JUMPVEL, FRICTION, jumpDelay;
     private boolean surfaceLeft, surfaceUp, surfaceRight, surfaceDown = false;
     boolean dead = false;
 
@@ -20,16 +20,16 @@ class Player {
         p = parent;
         this.pos = new PVector(x, y);
         this.vel = new PVector(0, 0);
-        this.SIZEX = TILESIZE;
-        this.SIZEY = TILESIZE;
-        this.SIZEX_HALF = SIZEX / 2;
-        this.SIZEY_HALF = SIZEY / 2;
         this.GRAVITY = 2;
         this.ACCEL = 4;
         this.MAXVEL = 6;
         this.JUMPVEL = 25;
         this.FRICTION = 2;
         this.sprite = spriteManager.getSprite("e_player");
+        this.SIZEX = sprite.width;
+        this.SIZEY = sprite.height;
+        this.SIZEX_HALF = SIZEX / 2;
+        this.SIZEY_HALF = SIZEY / 2;
 
         this.jumpDelay = 0;
         loadSprite();
@@ -100,15 +100,39 @@ class Player {
     }
 
     private void addInputs() {
-        if(INPUT_LEFT && !surfaceLeft) {
-            vel.x += -ACCEL;
+        if(INPUT_LEFT) {
+            if(!surfaceLeft) {
+                vel.x += -ACCEL;
+            }
+            else {
+                if(!surfaceDown && vel.y > 0) {
+                    vel.y = 0;
+                    if(jumpDelay > 0) jumpDelay += -0.5;
+                }
+            }
         }
-        if(INPUT_RIGHT && !surfaceRight) {
-            vel.x += ACCEL;
+        if(INPUT_RIGHT) {
+            if(!surfaceRight) {
+                vel.x += ACCEL;
+            }
+            else {
+                if(!surfaceDown && vel.y > 0) {
+                    vel.y = 0;
+                    if(jumpDelay > 0) jumpDelay += -0.25;
+                }
+            }
         }
-        if(INPUT_UP && surfaceDown && jumpDelay <= 0 && !surfaceUp) {
+        if(INPUT_UP && jumpDelay <= 0 && !surfaceUp) {
             vel.y = -JUMPVEL;
             jumpDelay = 7;
+            if(!surfaceDown) {
+                if(surfaceLeft && !surfaceRight) {
+                    vel.x = MAXVEL * 2;
+                }
+                else if(surfaceRight && !surfaceLeft) {
+                    vel.x = -MAXVEL * 2;
+                }
+            }
         }
         if(KEY_ESCAPE) game.initScenePaused();
     }
