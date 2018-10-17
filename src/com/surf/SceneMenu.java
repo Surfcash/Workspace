@@ -10,9 +10,9 @@ class SceneMenu extends Scene {
     }
 
     void render() {
-        p.background(128);
+        p.background(0);
         p.textSize(150);
-        p.fill(0);
+        p.fill(255);
         p.textAlign(p.CENTER, p.CENTER);
         p.text(label, p.width / 2F, p.height / 2F - 150);
         renderButtons();

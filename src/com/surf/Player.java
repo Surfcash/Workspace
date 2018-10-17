@@ -20,8 +20,8 @@ class Player {
         p = parent;
         this.pos = new PVector(x, y);
         this.vel = new PVector(0, 0);
-        this.SIZEX = tileSize;
-        this.SIZEY = tileSize;
+        this.SIZEX = TILESIZE;
+        this.SIZEY = TILESIZE;
         this.SIZEX_HALF = SIZEX / 2;
         this.SIZEY_HALF = SIZEY / 2;
         this.GRAVITY = 2;

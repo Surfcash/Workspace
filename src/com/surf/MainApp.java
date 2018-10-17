@@ -5,9 +5,9 @@ import processing.core.PVector;
 import processing.opengl.PJOGL;
 
 public class MainApp extends PApplet {
-    //TEMP TEST OF COMMIT
+
     static PVector window;
-    static int tileSize = 32;
+    static final int TILESIZE = 32;
     static Game game;
     static SpriteManager spriteManager;
     static boolean MOUSE_LEFT, INPUT_LEFT, INPUT_RIGHT, INPUT_UP, KEY_ESCAPE = false;

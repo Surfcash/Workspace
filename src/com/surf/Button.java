@@ -6,13 +6,13 @@ import processing.core.PVector;
 import static com.surf.MainApp.*;
 
 class Button {
-    PApplet parent;
+    PApplet p;
     PVector pos, size;
     String label;
     int textSize;
 
-    Button(String label, int posX, int posY, int bWidth, int bHeight, int textSize, PApplet p) {
-        parent = p;
+    Button(String label, int posX, int posY, int bWidth, int bHeight, int textSize, PApplet parent) {
+        p = parent;
         this.label = label;
         this.pos = new PVector(posX, posY);
         this.size = new PVector(bWidth, bHeight);
@@ -21,29 +21,29 @@ class Button {
 
     void render() {
         if(mouseHovered()) {
-            parent.stroke(0);
-            parent.fill(255);
-            parent.rectMode(parent.CENTER);
-            parent.rect(pos.x, pos.y, size.x, size.y);
+            p.noStroke();
+            p.fill(255);
+            p.rectMode(p.CENTER);
+            p.rect(pos.x, pos.y, size.x, size.y);
 
-            parent.textAlign(parent.CENTER, parent.CENTER);
-            parent.textSize(textSize);
-            parent.noStroke();
-            parent.fill(55);
-            parent.text(label, pos.x, pos.y - size.y * 0.08F);
+            p.textAlign(p.CENTER, p.CENTER);
+            p.textSize(textSize);
+            p.noStroke();
+            p.fill(55);
+            p.text(label, pos.x, pos.y - size.y * 0.08F);
         }
 
         else {
-            parent.stroke(0);
-            parent.fill(200);
-            parent.rectMode(parent.CENTER);
-            parent.rect(pos.x, pos.y, size.x, size.y);
+            p.noStroke();
+            p.fill(200);
+            p.rectMode(p.CENTER);
+            p.rect(pos.x, pos.y, size.x, size.y);
 
-            parent.textAlign(parent.CENTER, parent.CENTER);
-            parent.textSize(textSize);
-            parent.noStroke();
-            parent.fill(0);
-            parent.text(label, pos.x, pos.y - size.y * 0.08F);
+            p.textAlign(p.CENTER, p.CENTER);
+            p.textSize(textSize);
+            p.noStroke();
+            p.fill(0);
+            p.text(label, pos.x, pos.y - size.y * 0.08F);
         }
     }
 
@@ -56,6 +56,6 @@ class Button {
     }
 
     private boolean mouseHovered() {
-        return parent.mouseX >= pos.x - size.x / 2 && parent.mouseX <= pos.x + size.x / 2 && parent.mouseY >= pos.y - size.y / 2 && parent.mouseY <= pos.y + size.y / 2;
+        return p.mouseX >= pos.x - size.x / 2 && p.mouseX <= pos.x + size.x / 2 && p.mouseY >= pos.y - size.y / 2 && p.mouseY <= pos.y + size.y / 2;
     }
 }

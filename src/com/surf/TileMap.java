@@ -15,7 +15,7 @@ class TileMap {
     TileMap(int wide, int high, PApplet parent) {
         p = parent;
         this.scrollValue = new PVector(0, 0);
-        this.scrollMax = new PVector((wide * tileSize) - p.width, p.height - (high * tileSize));
+        this.scrollMax = new PVector((wide * TILESIZE) - p.width, p.height - (high * TILESIZE));
         this.tiles = new ArrayList<>();
     }
 
@@ -70,7 +70,7 @@ class TileMap {
 
     private void trimOutOfBoundsTiles() {
         for(Tile i : tiles) {
-            if(i.pos.y > p.height + tileSize && i.collapsed) {
+            if(i.pos.y > p.height + TILESIZE && i.collapsed) {
                 tiles.remove(i);
                 break;
             }

@@ -4,8 +4,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-import static com.surf.MainApp.spriteManager;
-import static com.surf.MainApp.tileSize;
+import static com.surf.MainApp.*;
 
 enum Tiles {
     TILE("tile", new int[]{0, 0, 0}),
@@ -29,7 +28,7 @@ class Tile {
     PVector pos;
     PVector vel = new PVector(0, 0);
     PApplet parent;
-    int SIZE = tileSize;
+    int SIZE = TILESIZE;
     private int SIZE_HALF = SIZE / 2;
     Tiles type;
     PImage sprite;
