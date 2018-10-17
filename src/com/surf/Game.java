@@ -86,7 +86,7 @@ class Game {
         level++;
         scene.buttons.clear();
         tempHold = new SceneLevel(p);
-        scene = new SceneMenu("VICTORY!", p);
+        scene = new SceneMenu("VICTORY", p);
         scene.buttons.add(new Button("NEXT LEVEL", p.width / 2, p.height / 2, 350, 50, 45, p));
         scene.buttons.add(new Button("BACK TO TITLE", p.width / 2, p.height / 2 + 60, 350, 50, 45, p));
         scene.buttons.add(new Button("EXIT", p.width / 2, p.height / 2 + 120, 350, 50, 45, p));
