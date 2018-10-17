@@ -31,15 +31,17 @@ abstract class LevelManager {
                         case 0: {
                             break;
                         }
-                        case 100: {
+                        case 125: {
                             map.tiles.add(new TileCollapsible(j, abs((i - level.height) + 1), type, p));
                             break;
                         }
                         case 200: {
                             map.tiles.add(new TilePassable(j, abs((i - level.height) + 1), type, p));
+                            break;
                         }
                         default: {
                             map.tiles.add(new Tile(j, abs((i - level.height) + 1), type, p));
+                            break;
                         }
                     }
                 }

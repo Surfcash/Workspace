@@ -8,12 +8,12 @@ import static com.surf.MainApp.*;
 
 enum Tiles {
     TILE("tile", new int[]{0, 0, 0}),
-    BRICK("brick", new int[]{25, 25, 25}),
-    GRASS("grass", new int[]{75, 125, 50}),
-    DIRT("dirt", new int[]{125, 75, 50}),
-    STONE("stone", new int[]{125, 125, 125}),
-    SPIKE("spike", new int[]{75, 75, 75}),
-    FINISH("finish", new int[]{255, 255, 255});
+    BRICK("brick", new int[]{125, 125, 125}),
+    GRASS("grass", new int[]{150, 150, 150}),
+    DIRT("dirt", new int[]{175, 175, 175}),
+    STONE("stone", new int[]{200, 200, 200}),
+    SPIKE("spike", new int[]{225, 225, 225}),
+    FINISH("finish", new int[]{250, 250, 250});
 
     String name;
     int[] colorValue;
