@@ -3,6 +3,7 @@ package com.surf;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import static com.surf.MainApp.deltaTime;
 import static com.surf.MainApp.spriteManager;
 
 class TileCollapsible extends Tile {
@@ -15,9 +16,9 @@ class TileCollapsible extends Tile {
 
     void update() {
         if(collapsed){
-            if(collapseDelay > 0) collapseDelay--;
+            if(collapseDelay > 0) collapseDelay -= 1 * deltaTime;
             else {
-                vel.y += 2;
+                vel.y += 2 * deltaTime;
             }
         }
         pos.y += vel.y;

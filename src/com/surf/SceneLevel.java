@@ -20,7 +20,7 @@ class SceneLevel extends Scene {
 
     void render() {
         p.background(255);
-        p.image(levelBackground, p.width / 2, p.height / 2);
+        p.image(levelBackground, p.width / 2F, p.height / 2F);
         player.render();
         tilemap.render();
         renderDeathCounter();
@@ -72,7 +72,8 @@ class SceneLevel extends Scene {
         p.textAlign(RIGHT);
         p.fill(255);
         p.textFont(game.guiFont, 30);
-        p.text("FPS: " + (int)p.frameRate, p.width - 30, 30);
+        //p.text("FPS: " + (int)p.frameRate, p.width - 30, 30);
+        p.text("Delta Time: " + deltaTime, p.width - 30, 30);
     }
 
     private void renderTitle() {

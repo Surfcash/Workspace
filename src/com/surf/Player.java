@@ -36,6 +36,7 @@ class Player {
     }
 
     void update() {
+        deltaPhysics();
         detectSurfaces();
 
         addInputs();
@@ -50,6 +51,14 @@ class Player {
     void render() {
         p.imageMode(p.CENTER);
         p.image(sprite, pos.x, pos.y);
+    }
+
+    private void deltaPhysics() {
+        this.ACCEL = 6 * deltaTime;
+        this.FRICTION = 3 * deltaTime;
+        this.MAXVEL = 8 * deltaTime;
+        this.GRAVITY = 2 * sq(deltaTime);
+        this.JUMPVEL = 1.75F + 26.25F * deltaTime;
     }
 
     private void detectSurfaces() {
@@ -91,7 +100,7 @@ class Player {
                             break;
                         }
                         if(i instanceof TileCollapsible) i.collapsed = true;
-                        if(jumpDelay > 0) jumpDelay--;
+                        if(jumpDelay > 0) jumpDelay += -1 * deltaTime;
                     }
                     if(i.type == Tiles.SPIKE) dead = true;
                 }
@@ -107,7 +116,7 @@ class Player {
             else {
                 if(!surfaceDown && vel.y > 0) {
                     vel.y = 0;
-                    if(jumpDelay > 0) jumpDelay += -0.5;
+                    if(jumpDelay > 0) jumpDelay += -0.5 * deltaTime;
                 }
             }
         }
@@ -118,7 +127,7 @@ class Player {
             else {
                 if(!surfaceDown && vel.y > 0) {
                     vel.y = 0;
-                    if(jumpDelay > 0) jumpDelay += -0.5;
+                    if(jumpDelay > 0) jumpDelay += -0.5 * deltaTime;
                 }
             }
         }

@@ -8,9 +8,11 @@ public class MainApp extends PApplet {
 
     static PVector window;
     static final int TILESIZE = 48;
+    static final int GAMESPEED = 60;
     static Game game;
     static SpriteManager spriteManager;
     static boolean MOUSE_LEFT, INPUT_LEFT, INPUT_RIGHT, INPUT_UP, KEY_ESCAPE = false;
+    static float previousMil, deltaTime;
 
     public static void main(String[] args) {
         PApplet.main("com.surf.MainApp");
@@ -22,6 +24,8 @@ public class MainApp extends PApplet {
         surface.setTitle("Colin's Workspace - Platformer");
         surface.setResizable(false);
         window = new PVector(width, height);
+        frameRate(60);
+        previousMil = millis();
     }
 
     public void settings() {
@@ -30,6 +34,8 @@ public class MainApp extends PApplet {
     }
 
     public void draw() {
+        deltaTime = (previousMil / millis()) * (GAMESPEED / frameRate);
+        previousMil = millis();
         render();
         update();
     }
