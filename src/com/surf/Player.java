@@ -26,8 +26,8 @@ class Player {
         this.JUMPVEL = 28;
         this.FRICTION = 3;
         this.sprite = spriteManager.getSprite("e_player");
-        this.SIZEX = sprite.width;
-        this.SIZEY = sprite.height;
+        this.SIZEX = sprite != null ? sprite.width : TILESIZE;
+        this.SIZEY = sprite != null ? sprite.height : TILESIZE;
         this.SIZEX_HALF = SIZEX / 2;
         this.SIZEY_HALF = SIZEY / 2;
 

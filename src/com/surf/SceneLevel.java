@@ -33,9 +33,11 @@ class SceneLevel extends Scene {
             case 1 : {
                 label = "1";
                 tilemap = LevelManager.levelLoader(label, p);
-                tilemap.scrollValue.x = tilemap.scrollValue.x / 2;
-                tilemap.scrollMap(new PVector(tilemap.scrollMax.x / 2, 0));
-                player = new Player(p.width / 2, p.height - TILESIZE * 2, p);
+                if(tilemap != null) {
+                    tilemap.scrollValue.x = tilemap.scrollValue.x / 2;
+                    tilemap.scrollMap(new PVector(tilemap.scrollMax.x / 2, 0));
+                    player = new Player(p.width / 2, p.height - TILESIZE * 2, p);
+                }
                 break;
             }
             case 2 : {
@@ -47,9 +49,11 @@ class SceneLevel extends Scene {
             default : {
                 label = "default";
                 tilemap = LevelManager.levelLoader(label, p);
-                tilemap.scrollValue.x = tilemap.scrollValue.x / 2;
-                tilemap.scrollMap(new PVector(tilemap.scrollMax.x / 2, 0));
-                player = new Player(p.width / 2, p.height - TILESIZE * 2, p);
+                if(tilemap != null) {
+                    tilemap.scrollValue.x = tilemap.scrollValue.x / 2;
+                    tilemap.scrollMap(new PVector(tilemap.scrollMax.x / 2, 0));
+                    player = new Player(p.width / 2, p.height - TILESIZE * 2, p);
+                }
             }
         }
     }
@@ -72,8 +76,7 @@ class SceneLevel extends Scene {
         p.textAlign(RIGHT);
         p.fill(255);
         p.textFont(game.guiFont, 30);
-        //p.text("FPS: " + (int)p.frameRate, p.width - 30, 30);
-        p.text("Delta Time: " + deltaTime, p.width - 30, 30);
+        p.text("FPS: " + (int)p.frameRate, p.width - 30, 30);
     }
 
     private void renderTitle() {
