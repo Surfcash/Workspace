@@ -9,8 +9,7 @@ import static com.surf.MainApp.*;
 
 class TileMap {
     ArrayList<Tile> tiles = new ArrayList<>();
-    PVector tileMapSize;
-    private PVector scrollValue, scrollMax;
+    PVector tileMapSize, scrollValue, scrollMax;
     PApplet p;
 
     TileMap(int wide, int high, PApplet parent) {

@@ -21,10 +21,10 @@ class Player {
         this.pos = new PVector(x, y);
         this.vel = new PVector(0, 0);
         this.GRAVITY = 2;
-        this.ACCEL = 4;
-        this.MAXVEL = 6;
-        this.JUMPVEL = 25;
-        this.FRICTION = 2;
+        this.ACCEL = 6;
+        this.MAXVEL = 8;
+        this.JUMPVEL = 28;
+        this.FRICTION = 3;
         this.sprite = spriteManager.getSprite("e_player");
         this.SIZEX = sprite.width;
         this.SIZEY = sprite.height;
@@ -118,7 +118,7 @@ class Player {
             else {
                 if(!surfaceDown && vel.y > 0) {
                     vel.y = 0;
-                    if(jumpDelay > 0) jumpDelay += -0.25;
+                    if(jumpDelay > 0) jumpDelay += -0.5;
                 }
             }
         }
@@ -154,7 +154,7 @@ class Player {
     private void addVelocity() {
         vel.x = constrain(vel.x, -MAXVEL, MAXVEL);
         PVector moveTileMap = new PVector(0, 0);
-        if((pos.x + vel.x < p.width * 0.25 && vel.x < 0 ) || (pos.x + vel.x > p.width * 0.75 && vel.x > 0)) {
+        if((pos.x + vel.x < p.width * 0.3 && vel.x < 0 ) || (pos.x + vel.x > p.width * 0.7 && vel.x > 0)) {
             moveTileMap.x = vel.x;
             if(game.scene.tilemap.scrollMap(new PVector(vel.x, 0))[0]) pos.x += vel.x;
         }

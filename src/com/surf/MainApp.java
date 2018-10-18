@@ -7,7 +7,7 @@ import processing.opengl.PJOGL;
 public class MainApp extends PApplet {
 
     static PVector window;
-    static final int TILESIZE = 32;
+    static final int TILESIZE = 48;
     static Game game;
     static SpriteManager spriteManager;
     static boolean MOUSE_LEFT, INPUT_LEFT, INPUT_RIGHT, INPUT_UP, KEY_ESCAPE = false;

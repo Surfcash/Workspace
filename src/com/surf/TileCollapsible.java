@@ -17,7 +17,7 @@ class TileCollapsible extends Tile {
         if(collapsed){
             if(collapseDelay > 0) collapseDelay--;
             else {
-                vel.y++;
+                vel.y += 2;
             }
         }
         pos.y += vel.y;
