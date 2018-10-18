@@ -1,17 +1,16 @@
 package com.surf;
 
 import processing.core.PApplet;
-import processing.core.PImage;
 import processing.core.PVector;
 
 import static com.surf.MainApp.*;
 
 class Player {
-    private PImage sprite;
+    private SpriteSheet spritesheet;
     PVector pos;
     private PVector vel;
     private PApplet p;
-    private int SIZEX, SIZEY, SIZEX_HALF, SIZEY_HALF;
+    private int SIZEX, SIZEY, SIZEX_HALF, SIZEY_HALF, animationState;
     private float GRAVITY, ACCEL, MAXVEL, JUMPVEL, FRICTION, jumpDelay;
     private boolean surfaceLeft, surfaceUp, surfaceRight, surfaceDown = false;
     boolean dead = false;
@@ -25,14 +24,16 @@ class Player {
         this.MAXVEL = 8;
         this.JUMPVEL = 28;
         this.FRICTION = 3;
-        this.sprite = spriteManager.getSprite("e_player");
-        this.SIZEX = sprite != null ? sprite.width : TILESIZE;
-        this.SIZEY = sprite != null ? sprite.height : TILESIZE;
-        this.SIZEX_HALF = SIZEX / 2;
-        this.SIZEY_HALF = SIZEY / 2;
+
+        this.animationState = 1;
 
         this.jumpDelay = 0;
         loadSprite();
+
+        this.SIZEX = (int)spritesheet.size.x;
+        this.SIZEY = (int)spritesheet.size.y;
+        this.SIZEX_HALF = SIZEX / 2;
+        this.SIZEY_HALF = SIZEY / 2;
     }
 
     void update() {
@@ -50,7 +51,7 @@ class Player {
 
     void render() {
         p.imageMode(p.CENTER);
-        p.image(sprite, pos.x, pos.y);
+        p.image(spritesheet.sprites[animationState], pos.x, pos.y);
     }
 
     private void deltaPhysics() {
@@ -110,6 +111,7 @@ class Player {
 
     private void addInputs() {
         if(INPUT_LEFT) {
+            animationState = 0;
             if(!surfaceLeft) {
                 vel.x += -ACCEL;
             }
@@ -121,6 +123,7 @@ class Player {
             }
         }
         if(INPUT_RIGHT) {
+            animationState = 1;
             if(!surfaceRight) {
                 vel.x += ACCEL;
             }
@@ -224,6 +227,6 @@ class Player {
     }
 
     void loadSprite() {
-        this.sprite = spriteManager.getSprite("e_player");
+        this.spritesheet = new SpriteSheet(2, 1, spriteManager.getSprite("e_player_sheet"));
     }
 }

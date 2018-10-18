@@ -26,6 +26,7 @@ final class SpriteManager {
                 fileName = pos > 0 ? fileName.substring(0, pos) : fileName;
                 if (i.isFile()) {
                     sprites.add(new Sprite(p.loadImage(i.getPath()), prefix + fileName));
+                    System.out.println(fileName);
                 }
             }
         }
