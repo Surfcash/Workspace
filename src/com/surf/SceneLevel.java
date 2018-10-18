@@ -9,6 +9,7 @@ class SceneLevel extends Scene {
     SceneLevel(PApplet p) {
         super(p);
         initLevel();
+        levelBackground = spriteManager.getSprite("s_background");
     }
 
     void update() {
@@ -19,6 +20,7 @@ class SceneLevel extends Scene {
 
     void render() {
         p.background(255);
+        p.image(levelBackground, p.width / 2, p.height / 2);
         player.render();
         tilemap.render();
         renderDeathCounter();
@@ -61,21 +63,21 @@ class SceneLevel extends Scene {
 
     private void renderDeathCounter() {
         p.textAlign(LEFT);
-        p.fill(0);
+        p.fill(255);
         p.textFont(game.guiFont, 30);
         p.text("Deaths: " + game.deaths, 30, 30);
     }
 
     private void renderFrameRate() {
         p.textAlign(RIGHT);
-        p.fill(0);
+        p.fill(255);
         p.textFont(game.guiFont, 30);
         p.text("FPS: " + (int)p.frameRate, p.width - 30, 30);
     }
 
     private void renderTitle() {
         p.textAlign(CENTER, CENTER);
-        p.fill(0);
+        p.fill(255);
         p.textFont(game.labelFont, 100);
         p.text("LEVEL " + label.toUpperCase(), p.width / 2F, 75);
     }
