@@ -13,7 +13,7 @@ class Scene {
     Player player;
     TileMap tilemap;
     ArrayList<Button> buttons = new ArrayList<>();
-    PImage levelBackground;
+    PImage levelForeground, levelBackground;
 
     Scene(PApplet parent) {
         p = parent;

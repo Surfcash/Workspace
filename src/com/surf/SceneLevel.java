@@ -9,7 +9,8 @@ class SceneLevel extends Scene {
     SceneLevel(PApplet p) {
         super(p);
         initLevel();
-        levelBackground = spriteManager.getSprite("s_background");
+        levelForeground = spriteManager.getSprite("s_levelOne_Foreground");
+        levelBackground = spriteManager.getSprite("s_levelOne_Background");
     }
 
     void update() {
@@ -20,9 +21,12 @@ class SceneLevel extends Scene {
 
     void render() {
         p.background(255);
-        p.image(levelBackground, p.width / 2F, p.height / 2F);
+        p.imageMode(CORNER);
+        p.image(levelBackground, -tilemap.scrollValue.x * 0.5F, p.height - levelBackground.height);
         player.render();
         tilemap.render();
+        p.imageMode(CORNER);
+        p.image(levelForeground, -tilemap.scrollValue.x, p.height - levelForeground.height);
         renderDeathCounter();
         renderFrameRate();
         renderTitle();
@@ -33,11 +37,7 @@ class SceneLevel extends Scene {
             case 1 : {
                 label = "1";
                 tilemap = LevelManager.levelLoader(label, p);
-                if(tilemap != null) {
-                    tilemap.scrollValue.x = tilemap.scrollValue.x / 2;
-                    tilemap.scrollMap(new PVector(tilemap.scrollMax.x / 2, 0));
-                    player = new Player(p.width / 2, p.height - TILESIZE * 2, p);
-                }
+                player = new Player(TILESIZE * 2, p.height - TILESIZE * 5, p);
                 break;
             }
             case 2 : {
@@ -74,7 +74,7 @@ class SceneLevel extends Scene {
 
     private void renderFrameRate() {
         p.textAlign(RIGHT);
-        p.fill(255);
+        p.fill(0);
         p.textFont(game.guiFont, 30);
         p.text("FPS: " + (int)p.frameRate, p.width - 30, 30);
     }

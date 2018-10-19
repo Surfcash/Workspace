@@ -40,8 +40,8 @@ class Player {
         deltaPhysics();
         detectSurfaces();
 
-        addInputs();
         addFriction();
+        addInputs();
         addGravity();
         addVelocity();
 
@@ -113,7 +113,12 @@ class Player {
         if(INPUT_LEFT) {
             animationState = 0;
             if(!surfaceLeft) {
-                vel.x += -ACCEL;
+                if(vel.x + -ACCEL >= -MAXVEL) {
+                    vel.x += -ACCEL;
+                }
+                else {
+                    vel.x = -MAXVEL;
+                }
             }
             else {
                 if(!surfaceDown && vel.y > 0) {
@@ -125,7 +130,12 @@ class Player {
         if(INPUT_RIGHT) {
             animationState = 1;
             if(!surfaceRight) {
-                vel.x += ACCEL;
+                if(vel.x + ACCEL <= MAXVEL) {
+                    vel.x += ACCEL;
+                }
+                else {
+                    vel.x = MAXVEL;
+                }
             }
             else {
                 if(!surfaceDown && vel.y > 0) {
@@ -139,10 +149,10 @@ class Player {
             jumpDelay = 7;
             if(!surfaceDown) {
                 if(surfaceLeft && !surfaceRight) {
-                    vel.x = MAXVEL * 2;
+                    vel.x = JUMPVEL * 0.75F;
                 }
                 else if(surfaceRight && !surfaceLeft) {
-                    vel.x = -MAXVEL * 2;
+                    vel.x = -JUMPVEL * 0.75F;
                 }
             }
         }
@@ -164,7 +174,6 @@ class Player {
     }
 
     private void addVelocity() {
-        vel.x = constrain(vel.x, -MAXVEL, MAXVEL);
         PVector moveTileMap = new PVector(0, 0);
         if((pos.x + vel.x < p.width * 0.3 && vel.x < 0 ) || (pos.x + vel.x > p.width * 0.7 && vel.x > 0)) {
             moveTileMap.x = vel.x;

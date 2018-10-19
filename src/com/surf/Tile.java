@@ -13,6 +13,7 @@ enum Tiles {
     DIRT("dirt", new int[]{175, 175, 175}),
     STONE("stone", new int[]{200, 200, 200}),
     SPIKE("spike", new int[]{225, 225, 225}),
+    INVISIBLE("invisible", new int[]{50, 50, 50}),
     FINISH("finish", new int[]{250, 250, 250});
 
     String name;
