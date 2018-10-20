@@ -18,31 +18,27 @@ abstract class LevelManager {
         if(level != null) {
             for (int i = level.height; i >= 0; i--) {
                 for (int j = 0; j < level.width; j++) {
-                    int tileValue = level.get(j, i);
-                    int[] colorValue = {(int)p.red(tileValue), (int)p.green(tileValue), (int)p.blue(tileValue)};
-                    Tiles type = Tiles.TILE;
+                    int pixelColor = level.get(j, i);
+                    float[] rgbArray = {p.red(pixelColor), p.green(pixelColor), p.blue(pixelColor)};
+                    float alphaValue = p.alpha(pixelColor);
+                    Tiles type = null;
 
                     for (Tiles k : Tiles.values()) {
-                        if (Arrays.equals(k.colorValue, colorValue)) {
+                        if (Arrays.equals(k.colorValue, rgbArray)) {
                             type = k;
+                            break;
                         }
+                        else type = Tiles.TILE;
                     }
-                    switch ((int)p.alpha(tileValue)) {
-                        case 0: {
-                            break;
-                        }
-                        case 125: {
-                            map.tiles.add(new TileCollapsible(j, abs((i - level.height) + 1), type, p));
-                            break;
-                        }
-                        case 200: {
-                            map.tiles.add(new TilePassable(j, abs((i - level.height) + 1), type, p));
-                            break;
-                        }
-                        default: {
-                            map.tiles.add(new Tile(j, abs((i - level.height) + 1), type, p));
-                            break;
-                        }
+
+                    if(alphaValue == 200) {
+                        map.tiles.add(new TilePassable(j, abs((i - level.height) + 1), type, p));
+                    }
+                    else if(alphaValue == 125) {
+                        map.tiles.add(new TileCollapsible(j, abs((i - level.height) + 1), type, p));
+                    }
+                    else if(alphaValue != 0) {
+                        map.tiles.add(new Tile(j, abs((i - level.height) + 1), type, p));
                     }
                 }
             }
