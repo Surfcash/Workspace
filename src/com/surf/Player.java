@@ -37,6 +37,7 @@ class Player {
     }
 
     void update() {
+        constrainToTiles();
         deltaPhysics();
         detectSurfaces();
 
@@ -60,53 +61,6 @@ class Player {
         this.MAXVEL = 8 * deltaTime;
         this.GRAVITY = 2 * sq(deltaTime);
         this.JUMPVEL = 1.75F + 26.25F * deltaTime;
-    }
-
-    private void detectSurfaces() {
-        surfaceLeft = surfaceUp = surfaceRight = surfaceDown = false;
-        PVector playerMin = new PVector(pos.x - SIZEX_HALF, pos.y - SIZEY_HALF);
-        PVector playerMax = new PVector(pos.x + SIZEX_HALF, pos.y + SIZEY_HALF);
-        PVector tileMin, tileMax;
-        for(Tile i : game.scene.tilemap.tiles) {
-            tileMin = new PVector(i.pos.x - i.SIZE_HALF, i.pos.y - i.SIZE_HALF);
-            tileMax = new PVector(i.pos.x + i.SIZE_HALF, i.pos.y + i.SIZE_HALF);
-            if(playerMin.y < tileMax.y && playerMax.y > tileMin.y) {
-                if(playerMin.x == tileMax.x) {
-                    if(i.solid) {
-                        surfaceLeft = true;
-                        if(vel.x < 0) vel.x = 0;
-                    }
-
-                }
-                else if(playerMax.x == tileMin.x) {
-                    if(i.solid) {
-                        surfaceRight = true;
-                        if(vel.x > 0) vel.x = 0;
-                    }
-                }
-            }
-            if(playerMin.x < tileMax.x && playerMax.x > tileMin.x) {
-                if(playerMin.y == tileMax.y) {
-                    if(i.solid) {
-                        surfaceUp = true;
-                        if(vel.y < 0) vel.y = 0;
-                    }
-                }
-                else if(playerMax.y == tileMin.y) {
-                    if(i.solid) {
-                        surfaceDown = true;
-                        if(vel.y > 0) vel.y = 0;
-                        if(i.type == Tiles.FINISH) {
-                            game.initSceneVictory();
-                            break;
-                        }
-                        if(i instanceof TileCollapsible) i.collapsed = true;
-                        if(jumpDelay > 0) jumpDelay += -1 * deltaTime;
-                    }
-                    if(i.type == Tiles.SPIKE) dead = true;
-                }
-            }
-        }
     }
 
     private void addInputs() {
@@ -187,67 +141,95 @@ class Player {
     }
 
     private void constrainToTiles() {
-        PVector playerMin, playerMax, tileMin, tileMax, overlap;
-        boolean down, up, right, left;
-        down = up = right = left = false;
+        BoxCollider p, t;
+        PVector deltaFix;
+        for(Tile i : game.scene.tilemap.tiles) {
+            p = new BoxCollider(pos, SIZEX, SIZEY);
+            t = new BoxCollider(i.pos, i.SIZE, i.SIZE);
+            deltaFix = new PVector(0,0);
+
+            if ((p.right > t.left) && (p.left < t.right) && (p.bottom > t.top) && (p.top < t.bottom)) {
+                if(p.bottom - vel.y <= t.top) {
+                    deltaFix.y = t.top - p.bottom;
+                }
+                else if(p.top - vel.y >= t.bottom) {
+                    deltaFix.y = t.bottom - p.top;
+                }
+
+                if(p.left - vel.x >= t.right) {
+                    deltaFix.x = t.right - p.left;
+                }
+                else if(p.right - vel.x <= t.left) {
+                    deltaFix.x = t.left - p.right;
+                }
+
+                if (i.solid) {
+                    if(deltaFix.x != 0 && deltaFix.y != 0) {
+                        if(abs(deltaFix.x) > abs(deltaFix.y)) {
+                            pos.y += deltaFix.y;
+                        }
+                        else if (abs(deltaFix.x) < abs(deltaFix.y)){
+                            pos.x += deltaFix.x;
+                        }
+                        else {
+                            pos.add(deltaFix);
+                        }
+                    }
+                    else {
+                        pos.add(deltaFix);
+                    }
+                }
+            }
+        }
+    }
+
+    private void detectSurfaces() {
+        surfaceLeft = surfaceUp = surfaceRight = surfaceDown = false;
+        BoxCollider p, t;
 
         for(Tile i : game.scene.tilemap.tiles) {
-            overlap = new PVector(0, 0);
-            playerMin = new PVector(pos.x - SIZEX_HALF, pos.y - SIZEY_HALF);
-            playerMax = new PVector(pos.x + SIZEX_HALF, pos.y + SIZEY_HALF);
-            tileMin = new PVector(i.pos.x - i.SIZE_HALF, i.pos.y - i.SIZE_HALF);
-            tileMax = new PVector(i.pos.x + i.SIZE_HALF, i.pos.y + i.SIZE_HALF);
+            p = new BoxCollider(pos, SIZEX, SIZEY);
+            t = new BoxCollider(i.pos, i.SIZE, i.SIZE);
 
-            if(playerMin.y < tileMax.y && playerMax.y > tileMin.y) {
-                if(playerMin.x - vel.x >= tileMax.x) {
-                    if(playerMin.x < tileMax.x) {
-                        left = true;
-                        overlap.x = tileMax.x - playerMin.x;
+            if(p.top < t.bottom && p.bottom > t.top) {
+                if (p.left == t.right) {
+                    if (i.solid) {
+                        surfaceLeft = true;
+                        if(vel.x < 0) {
+                            vel.x = 0;
+                        }
                     }
                 }
-                if(playerMax.x - vel.x <= tileMin.x) {
-                    if(playerMax.x > tileMin.x) {
-                        right = true;
-                        overlap.x = tileMin.x - playerMax.x;
+                if (p.right == t.left) {
+                    if (i.solid) {
+                        surfaceRight = true;
+                        if(vel.x > 0) {
+                            vel.x = 0;
+                        }
                     }
                 }
             }
-
-            if(playerMin.x < tileMax.x && playerMax.x > tileMin.x) {
-                if(playerMin.y - vel.y >= tileMax.y) {
-                    if(playerMin.y < tileMax.y) {
-                        up = true;
-                        overlap.y = tileMax.y - playerMin.y;
+            if(p.left < t.right && p.right > t.left) {
+                if (p.top == t.bottom) {
+                    if (i.solid) {
+                        surfaceUp = true;
+                        if(vel.y < 0) {
+                            vel.y = 0;
+                        }
                     }
                 }
-                if(playerMax.y - vel.y <= tileMin.y) {
-                    if(playerMax.y > tileMin.y) {
-                        down = true;
-                        overlap.y = tileMin.y - playerMax.y;
+                if (p.bottom == t.top) {
+                    if (i.solid) {
+                        surfaceDown = true;
+                        if(vel.y > 0) {
+                            vel.y = 0;
+                        }
+                        if(jumpDelay > 0) {
+                            jumpDelay += -1 * deltaTime;
+                        }
                     }
                 }
             }
-
-            if (i.solid) {
-                if(overlap.x != 0 && overlap.y != 0) {
-                    if(abs(overlap.x) > abs(overlap.y)) {
-                        pos.y += overlap.y;
-                    }
-                    else if (abs(overlap.x) < abs(overlap.y)){
-                        pos.x += overlap.x;
-                    }
-                }
-                else {
-                    pos.add(overlap);
-                }
-            }
-        }
-
-        if(right || left) {
-            vel.x = 0;
-        }
-        if(up || down) {
-            vel.y = 0;
         }
     }
 
