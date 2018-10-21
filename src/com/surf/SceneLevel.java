@@ -22,11 +22,11 @@ class SceneLevel extends Scene {
     void render() {
         p.background(255);
         p.imageMode(CORNER);
-        p.image(levelBackground, -tilemap.scrollValue.x * 0.5F, p.height - levelBackground.height);
+        p.image(levelBackground, -tilemap.scrollValue.x * 0.5F, p.height - levelBackground.height - tilemap.scrollValue.y * 0.5F);
         player.render();
         tilemap.render();
         p.imageMode(CORNER);
-        p.image(levelForeground, -tilemap.scrollValue.x, p.height - levelForeground.height);
+        p.image(levelForeground, -tilemap.scrollValue.x, p.height - levelForeground.height - tilemap.scrollValue.y);
         renderDeathCounter();
         renderFrameRate();
         renderTitle();
@@ -67,21 +67,21 @@ class SceneLevel extends Scene {
 
     private void renderDeathCounter() {
         p.textAlign(LEFT);
-        p.fill(255);
-        p.textFont(game.guiFont, 30);
-        p.text("Deaths: " + game.deaths, 30, 30);
+        p.fill(0);
+        p.textFont(game.labelFont, 60);
+        p.text("Deaths: " + game.deaths, 30, 60);
     }
 
     private void renderFrameRate() {
         p.textAlign(RIGHT);
         p.fill(0);
-        p.textFont(game.guiFont, 30);
-        p.text("FPS: " + (int)p.frameRate, p.width - 30, 30);
+        p.textFont(game.labelFont, 60);
+        p.text("FPS: " + (int)p.frameRate, p.width - 30, 60);
     }
 
     private void renderTitle() {
         p.textAlign(CENTER, CENTER);
-        p.fill(255);
+        p.fill(0);
         p.textFont(game.labelFont, 100);
         p.text("LEVEL " + label.toUpperCase(), p.width / 2F, 75);
     }

@@ -12,7 +12,9 @@ class SceneMenu extends Scene {
     void render() {
         p.background(0);
         renderTitle();
-        renderCredit();
+        if(label.equals("WORKSPACE")) {
+            renderCredit();
+        }
         renderButtons();
     }
 

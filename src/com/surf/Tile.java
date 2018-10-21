@@ -27,7 +27,7 @@ class Tile {
     PVector vel = new PVector(0, 0);
     PApplet parent;
     int SIZE = TILESIZE;
-    private int SIZE_HALF = SIZE / 2;
+    int SIZE_HALF = SIZE / 2;
     Tiles type;
     PImage sprite;
     boolean solid = true;

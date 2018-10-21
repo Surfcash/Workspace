@@ -14,8 +14,8 @@ class Game {
 
     Game(PApplet parent) {
         p = parent;
-        labelFont = parent.createFont("assets/fonts/Pianaforma.ttf", 150);
-        guiFont = parent.createFont("assets/fonts/Pianaforma.ttf", 24);
+        labelFont = parent.createFont("assets/fonts/Serangkai.ttf", 150);
+        guiFont = parent.createFont("assets/fonts/Serangkai.ttf", 24);
         parent.textFont(labelFont);
         scene = new Scene(parent);
         tempHold = new Scene(parent);

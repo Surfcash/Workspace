@@ -68,8 +68,8 @@ class Player {
         PVector playerMax = new PVector(pos.x + SIZEX_HALF, pos.y + SIZEY_HALF);
         PVector tileMin, tileMax;
         for(Tile i : game.scene.tilemap.tiles) {
-            tileMin = new PVector(i.pos.x - i.SIZE / 2F, i.pos.y - i.SIZE / 2F);
-            tileMax = new PVector(i.pos.x + i.SIZE / 2F, i.pos.y + i.SIZE / 2F);
+            tileMin = new PVector(i.pos.x - i.SIZE_HALF, i.pos.y - i.SIZE_HALF);
+            tileMax = new PVector(i.pos.x + i.SIZE_HALF, i.pos.y + i.SIZE_HALF);
             if(playerMin.y < tileMax.y && playerMax.y > tileMin.y) {
                 if(playerMin.x == tileMax.x) {
                     if(i.solid) {
@@ -188,40 +188,66 @@ class Player {
 
     private void constrainToTiles() {
         PVector playerMin, playerMax, tileMin, tileMax, overlap;
+        boolean down, up, right, left;
+        down = up = right = left = false;
+
         for(Tile i : game.scene.tilemap.tiles) {
+            overlap = new PVector(0, 0);
             playerMin = new PVector(pos.x - SIZEX_HALF, pos.y - SIZEY_HALF);
             playerMax = new PVector(pos.x + SIZEX_HALF, pos.y + SIZEY_HALF);
-            overlap = new PVector(0, 0);
-            tileMin = new PVector(i.pos.x - i.SIZE / 2F, i.pos.y - i.SIZE / 2F);
-            tileMax = new PVector(i.pos.x + i.SIZE / 2F, i.pos.y + i.SIZE / 2F);
+            tileMin = new PVector(i.pos.x - i.SIZE_HALF, i.pos.y - i.SIZE_HALF);
+            tileMax = new PVector(i.pos.x + i.SIZE_HALF, i.pos.y + i.SIZE_HALF);
+
             if(playerMin.y < tileMax.y && playerMax.y > tileMin.y) {
-                if(playerMin.x < tileMax.x && playerMin.x - vel.x >= tileMax.x) {
-                    overlap.x = tileMax.x - playerMin.x;
+                if(playerMin.x - vel.x >= tileMax.x) {
+                    if(playerMin.x < tileMax.x) {
+                        left = true;
+                        overlap.x = tileMax.x - playerMin.x;
+                    }
                 }
-                else if(playerMax.x > tileMin.x && playerMax.x - vel.x <= tileMin.x) {
-                    overlap.x = tileMin.x - playerMax.x;
+                if(playerMax.x - vel.x <= tileMin.x) {
+                    if(playerMax.x > tileMin.x) {
+                        right = true;
+                        overlap.x = tileMin.x - playerMax.x;
+                    }
                 }
             }
+
             if(playerMin.x < tileMax.x && playerMax.x > tileMin.x) {
-                if(playerMin.y < tileMax.y && playerMin.y - vel.y >= tileMax.y) {
-                    overlap.y = tileMax.y - playerMin.y;
+                if(playerMin.y - vel.y >= tileMax.y) {
+                    if(playerMin.y < tileMax.y) {
+                        up = true;
+                        overlap.y = tileMax.y - playerMin.y;
+                    }
                 }
-                else if(playerMax.y > tileMin.y && playerMax.y - vel.y <= tileMin.y) {
-                    overlap.y = tileMin.y - playerMax.y;
+                if(playerMax.y - vel.y <= tileMin.y) {
+                    if(playerMax.y > tileMin.y) {
+                        down = true;
+                        overlap.y = tileMin.y - playerMax.y;
+                    }
                 }
             }
-            if(i.solid) {
+
+            if (i.solid) {
                 if(overlap.x != 0 && overlap.y != 0) {
-                    if(abs(overlap.x) > abs(overlap.y)) pos.y += overlap.y;
-                    else if(abs(overlap.x) < abs(overlap.y)) pos.x += overlap.x;
+                    if(abs(overlap.x) > abs(overlap.y)) {
+                        pos.y += overlap.y;
+                    }
+                    else if (abs(overlap.x) < abs(overlap.y)){
+                        pos.x += overlap.x;
+                    }
                 }
-                else pos.add(overlap);
-            }
-            if(i.type == Tiles.SPIKE) {
-                if(overlap.x != 0 || overlap.y != 0) {
-                    dead = true;
+                else {
+                    pos.add(overlap);
                 }
             }
+        }
+
+        if(right || left) {
+            vel.x = 0;
+        }
+        if(up || down) {
+            vel.y = 0;
         }
     }
 
