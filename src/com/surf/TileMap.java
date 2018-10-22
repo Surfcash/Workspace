@@ -32,31 +32,31 @@ class TileMap {
         }
     }
 
-    boolean[] scrollMap(PVector delta) {
+    PVector scrollMap(PVector delta) {
         PVector tileMove = new PVector(0, 0);
         if(scrollValue.x + delta.x <= scrollMax.x && scrollValue.x + delta.x >= 0) {
             tileMove.x = -delta.x;
         }
-        else if(scrollValue.x < scrollMax.x && delta.x > 0) {
+        else if(scrollValue.x + delta.x > scrollMax.x) {
             tileMove.x = scrollValue.x - scrollMax.x;
         }
-        else if(scrollValue.x > 0 && delta.x < 0) {
+        else if(scrollValue.x + delta.x < 0) {
             tileMove.x = scrollValue.x;
         }
         if(scrollValue.y + delta.y >= scrollMax.y && scrollValue.y + delta.y <= 0) {
             tileMove.y = -delta.y;
         }
-        else if(scrollValue.y > scrollMax.y && delta.y < 0) {
+        else if(scrollValue.y + delta.y < scrollMax.y) {
             tileMove.y = scrollValue.y - scrollMax.y;
         }
-        else if(scrollValue.y < 0 && delta.y > 0) {
+        else if(scrollValue.y + delta.y > 0) {
             tileMove.y = scrollValue.y;
         }
         for(Tile i : tiles) {
             i.pos.add(tileMove);
         }
         scrollValue.sub(tileMove);
-        return new boolean[]{(scrollValue.x == 0 || scrollValue.x == scrollMax.x), (scrollValue.y == 0 || scrollValue.y == scrollMax.y)};
+        return tileMove;
     }
 
     void windowResize() {
@@ -64,8 +64,8 @@ class TileMap {
             i.pos.y += p.height - window.y;
         }
         if(game.scene.player != null) game.scene.player.pos.y += p.height - window.y;
-        scrollMax.x += window.x - p.width;
-        scrollMax.y += window.y - p.height;
+        scrollMax.x -= window.x - p.width;
+        scrollMax.y -= window.y - p.height;
     }
 
     private void trimOutOfBoundsTiles() {

@@ -8,7 +8,7 @@ import static com.surf.MainApp.*;
 class Player {
     private SpriteSheet spritesheet;
     PVector pos;
-    private PVector vel;
+    private PVector vel, tilesMoved;
     private PApplet p;
     private int SIZEX, SIZEY, SIZEX_HALF, SIZEY_HALF, animationState;
     private float GRAVITY, ACCEL, MAXVEL, JUMPVEL, FRICTION, jumpDelay;
@@ -37,7 +37,6 @@ class Player {
     }
 
     void update() {
-        constrainToTiles();
         deltaPhysics();
         detectSurfaces();
 
@@ -46,6 +45,7 @@ class Player {
         addGravity();
         addVelocity();
 
+        constrainToTiles();
         constrainToTiles();
         constrainToWindow();
     }
@@ -128,16 +128,18 @@ class Player {
     }
 
     private void addVelocity() {
-        PVector moveTileMap = new PVector(0, 0);
+        TileMap tilemap = game.scene.tilemap;
+        tilesMoved = new PVector(0, 0);
+
         if((pos.x + vel.x < p.width * 0.3 && vel.x < 0 ) || (pos.x + vel.x > p.width * 0.7 && vel.x > 0)) {
-            moveTileMap.x = vel.x;
-            if(game.scene.tilemap.scrollMap(new PVector(vel.x, 0))[0]) pos.x += vel.x;
+            tilesMoved.x = tilemap.scrollMap(new PVector(vel.x, 0)).x;
         }
-        else pos.x += vel.x;
         if((pos.y + vel.y < p.height * 0.3 && vel.y < 0 ) || (pos.y + vel.y > p.height * 0.7 && vel.y > 0)) {
-            if(game.scene.tilemap.scrollMap(new PVector(0, vel.y))[1]) pos.y += vel.y;
+            tilesMoved.y = tilemap.scrollMap(new PVector(0, vel.y)).y;
         }
-        else pos.y += vel.y;
+
+        if(tilesMoved.x == 0) pos.x += vel.x;
+        if(tilesMoved.y == 0) pos.y += vel.y;
     }
 
     private void constrainToTiles() {
@@ -147,21 +149,37 @@ class Player {
             p = new BoxCollider(pos, SIZEX, SIZEY);
             t = new BoxCollider(i.pos, i.SIZE, i.SIZE);
             deltaFix = new PVector(0,0);
+            if (((p.right > t.left) && (p.left < t.right) && (p.bottom > t.top) && (p.top < t.bottom)) || (pos.x < t.right && pos.x > t.left && pos.y > t.top && pos.y < t.bottom)) {
+                if(tilesMoved.y == 0) {
+                    if (p.bottom - vel.y <= t.top) {
+                        deltaFix.y = t.top - p.bottom;
+                    } else if (p.top - vel.y >= t.bottom) {
+                        deltaFix.y = t.bottom - p.top;
+                    }
+                }
+                else {
+                    if (p.bottom <= t.top - tilesMoved.y) {
+                        deltaFix.y = t.top - p.bottom;
+                    } else if (p.top >= t.bottom - tilesMoved.y) {
+                        deltaFix.y = t.bottom - p.top;
+                    }
+                }
 
-            if ((p.right > t.left) && (p.left < t.right) && (p.bottom > t.top) && (p.top < t.bottom)) {
-                if(p.bottom - vel.y <= t.top) {
-                    deltaFix.y = t.top - p.bottom;
+                if(tilesMoved.x == 0) {
+                    if (p.left - vel.x >= t.right) {
+                        deltaFix.x = t.right - p.left;
+                    } else if (p.right - vel.x <= t.left) {
+                        deltaFix.x = t.left - p.right;
+                    }
                 }
-                else if(p.top - vel.y >= t.bottom) {
-                    deltaFix.y = t.bottom - p.top;
+                else {
+                    if (p.left >= t.right - tilesMoved.x) {
+                        deltaFix.x = t.right - p.left;
+                    } else if (p.right <= t.left - tilesMoved.x) {
+                        deltaFix.x = t.left - p.right;
+                    }
                 }
 
-                if(p.left - vel.x >= t.right) {
-                    deltaFix.x = t.right - p.left;
-                }
-                else if(p.right - vel.x <= t.left) {
-                    deltaFix.x = t.left - p.right;
-                }
 
                 if (i.solid) {
                     if(deltaFix.x != 0 && deltaFix.y != 0) {
